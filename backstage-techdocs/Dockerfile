@@ -39,7 +39,7 @@ USER root
 
 # Install node
 RUN case ${TARGETARCH} in \
-         "amd64")  TARGETARCH=amd64  ;; \
+         "amd64")  TARGETARCH=x86  ;; \
     esac \
  && cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
