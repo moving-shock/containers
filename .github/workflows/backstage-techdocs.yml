@@ -1,4 +1,4 @@
-name: 'Image Build: Backstage TechDocs
+name: 'Image Build: Backstage TechDocs'
 
 on:
   push:
