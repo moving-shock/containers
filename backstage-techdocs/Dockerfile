@@ -1,11 +1,11 @@
 FROM debian:bullseye-slim
 
 ARG NODE_VERSION=v16.19.1
-# Set arch arm64/x64
-ARG ARCH=arm64
+# Arch is provided by buildx
+ARG TARGETARCH
 
 
-LABEL org.opencontainers.image.source=@https://github.com/moving-shock/containers" \
+LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
       org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
       org.opencontainers.image.description="Backstage:Techdocs Container" \
       org.opencontainers.image.title="techdocs" 
@@ -29,9 +29,9 @@ RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
 # Install node
 RUN cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${ARCH}.tar.xz \
- && tar xJf node-${NODE_VERSION}-linux-${ARCH}.tar.xz \
- && rm node-${NODE_VERSION}-linux-${ARCH}.tar.xz
-ENV PATH=/opt/node-${NODE_VERSION}-linux-${ARCH}/bin:${PATH}
+ && tar xJf node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
+ && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
 
 # Download plantuml file, Validate checksum & Move plantuml file
 RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar \
