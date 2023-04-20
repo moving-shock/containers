@@ -47,6 +47,12 @@ RUN case ${TARGETARCH} in \
  && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
 ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
 
+RUN cd /opt \
+ && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
+ && tar xJf node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
+ && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
+
 # Download plantuml file, Validate checksum & Move plantuml file
 RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar \
     && echo "08feded8d9e222dae0a741875d20977b4933f44a  plantuml.jar" | sha1sum -c - \
