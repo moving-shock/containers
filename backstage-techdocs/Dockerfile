@@ -38,7 +38,7 @@ USER root
 #    apt install -y java-11-amazon-corretto-jdk
 
 # Install node
-RUN case ${TARGETARCH} in \
+RUN case "${TARGETARCH}" in \
          "amd64")  TARGETARCH=x86  ;; \
     esac \
  && cd /opt \
