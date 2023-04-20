@@ -36,10 +36,7 @@ USER root
 #    apt install -y java-11-amazon-corretto-jdk
 
 # Install node
-RUN case ${TARGETARCH} in \
-         "amd64")  NODE_ARCH="x86"  ;; \
-         "arm64")  NODE_ARCH="arm64"  ;; \
-    esac \
+RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x86"; else echo "${TARGETARCH}}"; fi) \
  && cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
  && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
