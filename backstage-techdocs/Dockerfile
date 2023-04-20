@@ -7,9 +7,7 @@ ARG TARGETARCH
 ARG TARGETVARIANT
 RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf ", TARGETARCH=${TARGETARCH}" \
-    && printf ", TARGETVARIANT=${TARGETVARIANT} \n" \
-    && printf "With uname -s : " && uname -s \
-    && printf "and  uname -m : " && uname -mm
+    && printf ", TARGETVARIANT=${TARGETVARIANT}
 
 COPY .nvmrc /tmp/.nvmrc
 
@@ -38,14 +36,15 @@ USER root
 #    apt install -y java-11-amazon-corretto-jdk
 
 # Install node
-RUN case "${TARGETARCH}" in \
-         "amd64")  TARGETARCH=x86  ;; \
+RUN case ${TARGETARCH} in \
+         "amd64")  NODEARCH=x86  ;; \
+         "arm64")  NODEARCH=arm64  ;; \
     esac \
  && cd /opt \
- && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
- && tar xJf node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
- && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
-ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
+ && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODEARCH}.tar.xz \
+ && tar xJf node-${NODE_VERSION}-linux-${NODEARCH}.tar.xz \
+ && rm node-${NODE_VERSION}-linux-${NODEARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux-${NODEARCH}/bin:${PATH}
 
 RUN cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
