@@ -1,0 +1,48 @@
+FROM debian:bullseye-slim
+
+ARG NODE_VERSION=v16.19.1
+# Set arch arm64/x64
+ARG ARCH=arm64
+
+USER root
+
+# Install prerequisites
+RUN apt-get update && \
+    apt-get install -y software-properties-common ca-certificates gnupg wget curl graphviz fontconfig
+
+# Install python
+RUN apt install -y python3 python3-dev python3-pip && \
+    pip install --upgrade pip
+
+# Install java
+RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
+    add-apt-repository 'deb https://apt.corretto.aws stable main' && \
+    apt update && \
+    apt install -y java-11-amazon-corretto-jdk
+
+# Install node
+RUN cd /opt \
+ && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${ARCH}.tar.xz \
+ && tar xJf node-${NODE_VERSION}-linux-${ARCH}.tar.xz \
+ && rm node-${NODE_VERSION}-linux-${ARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux-${ARCH}/bin:${PATH}
+
+# Download plantuml file, Validate checksum & Move plantuml file
+RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar \
+    && echo "08feded8d9e222dae0a741875d20977b4933f44a  plantuml.jar" | sha1sum -c - \
+    && mv plantuml.jar /opt/plantuml.jar
+
+RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/plantuml
+RUN chmod 755 /usr/local/bin/plantuml
+
+# Install mkdocs
+RUN pip install mkdocs-techdocs-core mkdocs-same-dir pymdown-extensions mkdocs-video mkdocs-section-index
+
+# Install techdocs cli
+RUN npm install -g @techdocs/cli
+
+WORKDIR /content
+
+# Cleanup
+RUN rm -rf /var/cache/apt/* && \
+    rm -rf /tmp/setup
