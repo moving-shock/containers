@@ -2,7 +2,14 @@ FROM debian:bullseye-slim
 
 ARG NODE_VERSION=v16.19.1
 # Arch is provided by buildx
+ARG TARGETPLATFORM
 ARG TARGETARCH
+ARG TARGETVARIANT
+RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
+    && printf ", TARGETARCH=${TARGETARCH}" \
+    && printf ", TARGETVARIANT=${TARGETVARIANT} \n" \
+    && printf "With uname -s : " && uname -s \
+    && printf "and  uname -m : " && uname -mm
 
 
 LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
