@@ -1,4 +1,4 @@
-name: 'Image Build: Heritrix'
+name: 'Image Build: Backstage TechDocs
 
 on:
   push:
