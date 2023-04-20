@@ -12,9 +12,8 @@ RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf "and  uname -m : " && uname -mm
 
 RUN case ${TARGETARCH} in \
-         "amd64")  NODE_ARCH=x86  ;; \
-         *)        NODE_ARCH=${TARGETARCH}  ;; \
-    esac \
+         "amd64")  NODE_ARCH=x86 ;; \
+         *)        NODE_ARCH=${TARGETARCH} ;; esac
 
 LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
       org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
