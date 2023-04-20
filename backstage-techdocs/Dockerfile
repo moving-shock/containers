@@ -11,6 +11,10 @@ RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf "With uname -s : " && uname -s \
     && printf "and  uname -m : " && uname -mm
 
+RUN case ${TARGETARCH} in \
+         "amd64")  NODE_ARCH=x86  ;; \
+         *)        NODE_ARCH=${TARGETARCH}  ;; \
+    esac \
 
 LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
       org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
@@ -35,10 +39,10 @@ RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
 
 # Install node
 RUN cd /opt \
- && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
- && tar xJf node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
- && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
-ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
+ && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
+ && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
+ && rm node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux-${NODE_ARCH}/bin:${PATH}
 
 # Download plantuml file, Validate checksum & Move plantuml file
 RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar \
