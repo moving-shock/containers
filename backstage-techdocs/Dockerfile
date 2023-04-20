@@ -7,7 +7,7 @@ ARG TARGETARCH
 ARG TARGETVARIANT
 RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf ", TARGETARCH=${TARGETARCH}" \
-    && printf ", TARGETVARIANT=${TARGETVARIANT}
+    && printf ", TARGETVARIANT=${TARGETVARIANT}"
 
 COPY .nvmrc /tmp/.nvmrc
 
