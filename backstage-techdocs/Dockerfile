@@ -4,6 +4,12 @@ ARG NODE_VERSION=v16.19.1
 # Set arch arm64/x64
 ARG ARCH=arm64
 
+
+LABEL org.opencontainers.image.source=@https://github.com/moving-shock/containers" \
+      org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
+      org.opencontainers.image.description="Backstage:Techdocs Container" \
+      org.opencontainers.image.title="techdocs" 
+
 USER root
 
 # Install prerequisites
