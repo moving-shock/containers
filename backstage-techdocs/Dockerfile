@@ -11,9 +11,10 @@ RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf "With uname -s : " && uname -s \
     && printf "and  uname -m : " && uname -mm
 
-RUN case ${TARGETARCH} in \
-         "amd64")  NODE_ARCH=x86 ;; \
-         *)        NODE_ARCH=${TARGETARCH} ;; esac
+COPY .nvmrc /tmp/.nvmrc
+
+RUN printf "$(cat /tmp/.nvmrc | tr -cd [:digit:].)"
+
 
 LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
       org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
@@ -37,7 +38,10 @@ RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
     apt install -y java-11-amazon-corretto-jdk
 
 # Install node
-RUN cd /opt \
+RUN case ${TARGETARCH} in \
+         "amd64")  NODE_ARCH=x86 ;; \
+         *)        NODE_ARCH=${TARGETARCH} ;; esac \
+ &&  cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
  && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
  && rm node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
