@@ -37,8 +37,8 @@ USER root
 
 # Install node
 RUN case ${TARGETARCH} in \
-         "amd64")  NODEARCH=x86  ;; \
-         "arm64")  NODEARCH=arm64  ;; \
+         "amd64")  export NODEARCH=x86  ;; \
+         "arm64")  export NODEARCH=arm64  ;; \
     esac \
  && cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODEARCH}.tar.xz \
