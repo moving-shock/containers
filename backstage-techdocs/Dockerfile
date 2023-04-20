@@ -24,28 +24,28 @@ LABEL org.opencontainers.image.source="https://github.com/moving-shock/container
 USER root
 
 # Install prerequisites
-RUN apt-get update && \
-    apt-get install -y software-properties-common ca-certificates gnupg wget curl graphviz fontconfig
+#RUN apt-get update && \
+#    apt-get install -y software-properties-common ca-certificates gnupg wget curl graphviz fontconfig
 
 # Install python
-RUN apt install -y python3 python3-dev python3-pip && \
-    pip install --upgrade pip
+#RUN apt install -y python3 python3-dev python3-pip && \
+#    pip install --upgrade pip
 
 # Install java
-RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
-    add-apt-repository 'deb https://apt.corretto.aws stable main' && \
-    apt update && \
-    apt install -y java-11-amazon-corretto-jdk
+#RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
+#    add-apt-repository 'deb https://apt.corretto.aws stable main' && \
+#    apt update && \
+#    apt install -y java-11-amazon-corretto-jdk
 
 # Install node
 RUN case ${TARGETARCH} in \
-         "amd64")  NODE_ARCH=x86 ;; \
-         *)        NODE_ARCH=${TARGETARCH} ;; esac \
- &&  cd /opt \
- && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
- && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
- && rm node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
-ENV PATH=/opt/node-${NODE_VERSION}-linux-${NODE_ARCH}/bin:${PATH}
+         "amd64")  TARGETARCH=amd64  ;; \
+    esac \
+ && cd /opt \
+ && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
+ && tar xJf node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
+ && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
 
 # Download plantuml file, Validate checksum & Move plantuml file
 RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar \
