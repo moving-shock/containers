@@ -1,7 +1,7 @@
 FROM debian:bullseye-slim
 
 ARG NODE_VERSION=v16.19.1
-ARG NODE_ARCH
+ENV NODE_ARCH=""
 # Arch is provided by buildx
 ARG TARGETPLATFORM
 ARG TARGETARCH
