@@ -28,7 +28,7 @@ RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
 
 # Install node
 RUN cd /opt \
- && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${ARCH}.tar.xz \
+ && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
  && tar xJf node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz \
  && rm node-${NODE_VERSION}-linux-${TARGETARCH}.tar.xz
 ENV PATH=/opt/node-${NODE_VERSION}-linux-${TARGETARCH}/bin:${PATH}
