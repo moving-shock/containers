@@ -53,7 +53,7 @@ USER root
 #RUN sudo apt-get --yes install zulu17-jdk
 
 # Install node
-RUN export NODEARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x86"; else echo "${TARGETARCH}}"; fi) \
+RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x86"; else echo "${TARGETARCH}}"; fi) \
  && cd /opt \
  && curl -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
  && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
