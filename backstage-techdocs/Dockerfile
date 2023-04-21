@@ -22,12 +22,12 @@ LABEL org.opencontainers.image.source="https://github.com/moving-shock/container
 USER root
 
 # Install prerequisites
-#RUN apt-get update && \
-#    apt-get install -y software-properties-common ca-certificates gnupg wget curl graphviz fontconfig
+RUN apt-get update && \
+    apt-get install -y software-properties-common ca-certificates gnupg wget curl graphviz fontconfig
 
 # Install python
-#RUN apt install -y python3 python3-dev python3-pip && \
-#    pip install --upgrade pip
+RUN apt install -y python3 python3-dev python3-pip && \
+    pip install --upgrade pip
 
 # Install java
 #RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
