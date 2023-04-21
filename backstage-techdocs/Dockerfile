@@ -53,7 +53,7 @@ RUN apt install -y python3 python3-dev python3-pip && \
 #RUN sudo apt-get --yes install zulu17-jdk
 
 # Install node
-RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}}"; fi) \
+RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
  && cd /opt \
  && curl -v -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
  && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz --transform "s/node-${NODE_VERSION}-linux-${NODE_ARCH}/node-${NODE_VERSION}-linux/" \
