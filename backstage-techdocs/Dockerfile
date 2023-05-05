@@ -35,7 +35,7 @@ RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
     apt update && \
     apt install -y java-11-amazon-corretto-jdk
 # add Azul's public key
-RUN sudo apt-key adv \
+RUN apt-key adv \
   --keyserver hkp://keyserver.ubuntu.com:80 \
   --recv-keys 0xB1998361219BD9C9
 
@@ -44,13 +44,13 @@ RUN sudo apt-key adv \
 RUN curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-3_all.deb
 
 # install the package
-RUN sudo apt-get install ./zulu-repo_1.0.0-3_all.deb
+RUN apt-get install ./zulu-repo_1.0.0-3_all.deb
 
 # update the package sources
-RUN sudo apt-get update
+RUN apt-get update
 
 # install Azul Zulu JDK 17
-RUN sudo apt-get --yes install zulu17-jdk
+RUN apt-get --yes install zulu17-jdk
 
 # Install node
 RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
