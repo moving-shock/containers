@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ARG NODE_VERSION=v16.19.1
+ARG NODE_VERSION=v16.20.0
 # Arch is provided by buildx
 ARG TARGETPLATFORM
 ARG TARGETARCH
@@ -10,6 +10,7 @@ RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf ", TARGETVARIANT=${TARGETVARIANT}"
 
 COPY .nvmrc /tmp/.nvmrc
+COPY requirements.txt /tmp/requirements.txt
 
 RUN printf "$(cat /tmp/.nvmrc | tr -cd [:digit:].)"
 
@@ -69,7 +70,7 @@ RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/pla
 RUN chmod 755 /usr/local/bin/plantuml
 
 # Install mkdocs
-RUN pip install mkdocs-techdocs-core mkdocs-same-dir pymdown-extensions mkdocs-video mkdocs-section-index
+RUN pip install -r /tmp/requirements.txt
 
 # Install techdocs cli
 RUN npm install -g @techdocs/cli
