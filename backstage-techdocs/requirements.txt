@@ -1,5 +1,5 @@
 ###### Requirements ######
-mkdocs-techdocs-core == 1.2.0
+mkdocs-techdocs-core == 1.2.1
 mkdocs-same-dir == 0.1.2
 mkdocs-video == 1.5.0
 mkdocs-section-index == 0.3.5
