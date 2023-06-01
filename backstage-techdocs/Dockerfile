@@ -1,5 +1,6 @@
 FROM debian:bullseye-slim
 
+# renovate: datasource=node-version depName=node versioning=npm
 ARG NODE_VERSION=v16.20.0
 ARG PLANTUML_VERSION=1.2023.8
 ARG PLANTUML_SHA=0a200db6e485c18206fc98e3ba1b44876c31bcec167ec0d5f152eb67c87aad46

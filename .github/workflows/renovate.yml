@@ -1,0 +1,25 @@
+name: Renovate
+on:
+  schedule:
+    # The "*" (#42, asterisk) character has special semantics in YAML, so this
+    # string has to be quoted.
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: Blank
+        type: string
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v38.1.0
+        with:
+          configurationFile: .github/renovate.json5
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          RENOVATE_HOST_RULES: "[{ \"matchHost\": \"ghcr.io\", \"hostType\": \"docker\", \"username\": \"${{ github.repository_owner }}\", \"password\": \"${{ secrets.CR_PAT }}\"}]"
+          LOG_LEVEL: DEBUG
