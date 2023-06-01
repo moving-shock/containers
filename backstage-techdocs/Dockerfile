@@ -9,11 +9,7 @@ RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
     && printf ", TARGETARCH=${TARGETARCH}" \
     && printf ", TARGETVARIANT=${TARGETVARIANT}"
 
-COPY .nvmrc /tmp/.nvmrc
 COPY requirements.txt /tmp/requirements.txt
-
-RUN printf "$(cat /tmp/.nvmrc | tr -cd [:digit:].)"
-
 
 LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
       org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
