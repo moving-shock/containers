@@ -1,6 +1,8 @@
 FROM debian:bullseye-slim
 
 ARG NODE_VERSION=v16.20.0
+ARG PLANTUML_VERSION=1.2023.8
+ARG PLANTUML_SHA=0a200db6e485c18206fc98e3ba1b44876c31bcec167ec0d5f152eb67c87aad46
 # Arch is provided by buildx
 ARG TARGETPLATFORM
 ARG TARGETARCH
@@ -58,8 +60,8 @@ RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${
 ENV PATH=/opt/node-${NODE_VERSION}-linux/bin:${PATH}
 
 # Download plantuml file, Validate checksum & Move plantuml file
-RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar \
-    && echo "08feded8d9e222dae0a741875d20977b4933f44a  plantuml.jar" | sha1sum -c - \
+RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar \
+    && echo "${PLANTUML_SHA} plantuml.jar" | sha256sum -c - \
     && mv plantuml.jar /opt/plantuml.jar
 
 RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/plantuml
