@@ -4,6 +4,8 @@ FROM debian:bullseye-slim
 ARG NODE_VERSION=v16.20.0
 ARG PLANTUML_VERSION=1.2023.8
 ARG PLANTUML_SHA=0a200db6e485c18206fc98e3ba1b44876c31bcec167ec0d5f152eb67c87aad46
+# renovate: datasource=java-version depName=java
+ARG JAVA_VERSION=17
 # Arch is provided by buildx
 ARG TARGETPLATFORM
 ARG TARGETARCH
