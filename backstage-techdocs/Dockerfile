@@ -32,19 +32,9 @@ RUN apt install -y python3 python3-dev python3-pip && \
     pip install --upgrade pip
 
 # Install java
-RUN wget -O- https://apt.corretto.aws/corretto.key | apt-key add - && \
-    add-apt-repository 'deb https://apt.corretto.aws stable main' && \
-    apt update && \
-    apt install -y java-11-amazon-corretto-jdk
-# add Azul's public key
-RUN apt-key adv \
-  --keyserver hkp://keyserver.ubuntu.com:80 \
-  --recv-keys 0xB1998361219BD9C9
-
 # download and install the package that adds
 # the Azul APT repository to the list of sources
 RUN curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-3_all.deb
-
 # install the package
 RUN apt-get install ./zulu-repo_1.0.0-3_all.deb
 
@@ -52,7 +42,7 @@ RUN apt-get install ./zulu-repo_1.0.0-3_all.deb
 RUN apt-get update
 
 # install Azul Zulu JDK 17
-RUN apt-get --yes install zulu17-jdk
+RUN apt-get --yes install zulu${JAVA_VERSION}-jdk
 
 # Install node
 RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
