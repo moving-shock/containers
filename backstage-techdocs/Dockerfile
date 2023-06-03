@@ -25,24 +25,21 @@ USER root
 
 # Install prerequisites
 RUN apt-get update && \
-    apt-get install -y software-properties-common ca-certificates gnupg wget curl graphviz fontconfig
+    apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg wget curl graphviz fontconfig
 
 # Install python
 RUN apt install -y python3 python3-dev python3-pip && \
     pip install --upgrade pip
 
-# Install java
-# download and install the package that adds
-# the Azul APT repository to the list of sources
-RUN curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-3_all.deb
-# install the package
-RUN apt-get install ./zulu-repo_1.0.0-3_all.deb
-
+# Install Temurin Java
+# Add public key
+RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
+# Add repository to the list of sources
+RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
 # update the package sources
 RUN apt-get update
-
 # install Azul Zulu JDK 17
-RUN apt-get --yes install zulu${JAVA_VERSION}-jdk
+RUN apt-get --yes install temurin-${JAVA_VERSION}-jdk
 
 # Install node
 RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
