@@ -1,0 +1,70 @@
+FROM debian:bullseye-slim
+
+# renovate: datasource=node-version depName=node versioning=npm
+ARG NODE_VERSION=v16.20.0
+ARG PLANTUML_VERSION=1.2023.8
+ARG PLANTUML_SHA=0a200db6e485c18206fc98e3ba1b44876c31bcec167ec0d5f152eb67c87aad46
+# renovate: datasource=java-version depName=java
+ARG JAVA_VERSION=17
+# Arch is provided by buildx
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ARG TARGETVARIANT
+RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
+    && printf ", TARGETARCH=${TARGETARCH}" \
+    && printf ", TARGETVARIANT=${TARGETVARIANT}"
+
+COPY requirements.txt /tmp/requirements.txt
+
+LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
+      org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
+      org.opencontainers.image.description="Backstage:Techdocs Container" \
+      org.opencontainers.image.title="techdocs" 
+
+USER root
+
+# Install prerequisites
+RUN apt-get update && \
+    apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg wget curl graphviz fontconfig
+
+# Install python
+RUN apt install -y python3 python3-dev python3-pip && \
+    pip install --upgrade pip
+
+# Install Temurin Java
+# Add public key
+RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
+# Add repository to the list of sources
+RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
+# update the package sources
+RUN apt-get update
+# install Azul Zulu JDK 17
+RUN apt-get --yes install temurin-${JAVA_VERSION}-jdk
+
+# Install node
+RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
+ && cd /opt \
+ && curl -v -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
+ && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz --transform "s/node-${NODE_VERSION}-linux-${NODE_ARCH}/node-${NODE_VERSION}-linux/" \
+ && rm node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
+ENV PATH=/opt/node-${NODE_VERSION}-linux/bin:${PATH}
+
+# Download plantuml file, Validate checksum & Move plantuml file
+RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar \
+    && echo "${PLANTUML_SHA} plantuml.jar" | sha256sum -c - \
+    && mv plantuml.jar /opt/plantuml.jar
+
+RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/plantuml
+RUN chmod 755 /usr/local/bin/plantuml
+
+# Install mkdocs
+RUN pip install -r /tmp/requirements.txt
+
+# Install techdocs cli
+RUN npm install -g @techdocs/cli
+
+WORKDIR /content
+
+# Cleanup
+RUN rm -rf /var/cache/apt/* && \
+    rm -rf /tmp/setup
