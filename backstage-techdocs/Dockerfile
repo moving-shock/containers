@@ -41,7 +41,7 @@ RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION
 # update the package sources
 RUN apt-get update
 # install Azul Zulu JDK 17
-RUN JAVA_MAJOR_VERSION=$(echo ${JAVA_VERSION} | grep -Po '^\d+') \
+RUN JAVA_MAJOR_VERSION=$(echo "${JAVA_VERSION}" | grep -o '^[0-9]*') \
  && apt-get --yes install temurin-${JAVA_MAJOR_VERSION}-jre=${JAVA_VERSION}
 
 # Install node
