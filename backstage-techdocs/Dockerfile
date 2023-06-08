@@ -4,8 +4,6 @@ FROM debian:bullseye-slim
 ARG NODE_VERSION=v16.20.0
 ARG PLANTUML_VERSION=1.2023.8
 ARG PLANTUML_SHA=0a200db6e485c18206fc98e3ba1b44876c31bcec167ec0d5f152eb67c87aad46
-# renovate: datasource=java-version depName=java packageName=java-jre versioning=loose
-ARG JAVA_MAJOR_VERSION=17
 # renovate: datasource=java-version depName=java packageName=java-jre
 ARG JAVA_VERSION=17
 # Arch is provided by buildx
@@ -34,6 +32,8 @@ RUN apt install -y python3 python3-dev python3-pip && \
     pip install --upgrade pip
 
 # Install Temurin Java
+# Get the major version of Java
+RUN echo ${JAVA_VERSION} | grep -o '^[0-9]*' > /tmp/java_major_version.txt
 # Add public key
 RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
 # Add repository to the list of sources
@@ -41,7 +41,8 @@ RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION
 # update the package sources
 RUN apt-get update
 # install Azul Zulu JDK 17
-RUN apt-get --yes install temurin-${JAVA_VERSION_MAJOR}-jre=${JAVA_VERSION}
+RUN JAVA_MAJOR_VERSION=$(echo ${TARGETARCH} | grep -Po '^\d+') \
+ && apt-get --yes install temurin-$(cat /tmp/java_major_version.txt)-jre=${JAVA_VERSION}
 
 # Install node
 RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
