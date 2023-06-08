@@ -42,7 +42,7 @@ RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION
 RUN apt-get update
 # install Azul Zulu JDK 17
 RUN JAVA_MAJOR_VERSION=$(echo ${TARGETARCH} | grep -Po '^\d+') \
- && apt-get --yes install temurin-$(cat /tmp/java_major_version.txt)-jre=${JAVA_VERSION}
+ && apt-get --yes install temurin-${JAVA_MAJOR_VERSION}-jre=${JAVA_VERSION}
 
 # Install node
 RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
