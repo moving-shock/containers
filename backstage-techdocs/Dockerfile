@@ -3,7 +3,7 @@ FROM debian:bullseye-slim
 # renovate: datasource=node-version depName=node versioning=npm
 ARG NODE_VERSION=v16.20.0
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
-ARG PLANTUML_VERSION=1.2023.7
+ARG PLANTUML_VERSION=v1.2023.7
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
 ARG PLANTUML_SHA=0a200db6e485c18206fc98e3ba1b44876c31bcec167ec0d5f152eb67c87aad46
 # renovate: datasource=java-version depName=java packageName=java-jre
@@ -55,7 +55,7 @@ RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${
 ENV PATH=/opt/node-${NODE_VERSION}-linux/bin:${PATH}
 
 # Download plantuml file, Validate checksum & Move plantuml file
-RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml.jar \
+RUN curl -o plantuml.jar -L https://github.com/plantuml/plantuml/releases/download/${PLANTUML_VERSION}/plantuml.jar \
     && echo "${PLANTUML_SHA} plantuml.jar" | sha256sum -c - \
     && mv plantuml.jar /opt/plantuml.jar
 
