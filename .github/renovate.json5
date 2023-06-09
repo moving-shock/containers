@@ -45,41 +45,12 @@
     {
       "fileMatch": ["(^|/|\\.)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s"
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s",
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?) digestVersion=(?<currentValue>.*)\\s(?:ENV|ARG) .+?_SHA=(?<currentDigest>.+?)\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     },
   ],
   packageRules: [
-    // Setup datasources
-    {
-      "matchDatasources": [
-        "npm"
-      ],
-      "stabilityDays": 3
-    },
-    {
-      matchDatasources: [
-        "helm"
-      ],
-      "stabilityDays": 7,
-      ignoreDeprecated: true,
-    },
-    // Custom version schemes
-    {
-      matchPackageNames: [
-        "kubernetes/ingress-nginx"
-      ],
-      versioning: "regex:^(?<compatibility>.*)v(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?$"
-    },
-    {
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "quay.io/minio/minio"
-      ],
-      versioning: "regex:^RELEASE\\.(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})",
-    },
   ]
 }
