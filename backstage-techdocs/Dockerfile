@@ -3,7 +3,7 @@ FROM debian:bullseye-slim
 # renovate: datasource=node-version depName=node versioning=npm
 ARG NODE_VERSION=v16.20.0
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
-ARG PLANTUML_VERSION=v1.2023.7
+ARG PLANTUML_VERSION=v1.2023.8
 # renovate: datasource=java-version depName=java packageName=java-jre
 ARG JAVA_VERSION=17.0.7+7
 # Arch is provided by buildx
