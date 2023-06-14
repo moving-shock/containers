@@ -15,6 +15,7 @@
   dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   dependencyDashboardAutoclose: true,
+  osvVulnerabilityAlerts: true,
   enabledManagers: [
     "npm",
     "nodenv",
@@ -36,12 +37,6 @@
     dependencyDashboardApproval: true
   },
   // Set up Renovate Managers
-  // Explicit K8s filematch
-  kubernetes: {
-    fileMatch: [
-      "k8s/.+\\.yaml"
-    ]
-  },
   regexManagers: [
     {
       "fileMatch": ["(^|/|\\.)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
