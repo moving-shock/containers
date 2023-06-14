@@ -53,6 +53,7 @@ RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${
  && curl -v -LO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz \
  && tar xJf node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz --transform "s/node-${NODE_VERSION}-linux-${NODE_ARCH}/node-${NODE_VERSION}-linux/" \
  && rm node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
+
 ENV PATH=/opt/node-${NODE_VERSION}-linux/bin:${PATH}
 
 # Download plantuml file, Validate checksum & Move plantuml file
@@ -75,7 +76,3 @@ RUN groupadd --gid $USER_GID $USERNAME \
 USER $USERNAME
 
 WORKDIR /content
-
-# Cleanup
-RUN rm -rf /var/cache/apt/* && \
-    rm -rf /tmp/setup
