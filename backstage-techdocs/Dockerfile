@@ -1,5 +1,8 @@
 FROM debian:bullseye-slim
 
+ARG USERNAME=techdocs
+ARG USER_UID=1001
+ARG USER_GID=$USER_UID
 # renovate: datasource=node-version depName=node versioning=npm
 ARG NODE_VERSION=v16.20.0
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
@@ -25,17 +28,17 @@ USER root
 
 # Install prerequisites
 RUN apt-get update && \
-    apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg wget curl graphviz fontconfig
+    apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg curl graphviz fontconfig
 
 # Install python
 RUN apt install -y python3 python3-dev python3-pip && \
-    pip install --upgrade pip
+    pip install --upgrade --no-cache-dir pip
 
 # Install Temurin Java
 # Get the major version of Java
 RUN echo ${JAVA_VERSION} | grep -o '^[0-9]*' > /tmp/java_major_version.txt
 # Add public key
-RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
+RUN curl -o - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
 # Add repository to the list of sources
 RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
 # update the package sources
@@ -64,6 +67,12 @@ RUN pip install -r /tmp/requirements.txt
 
 # Install techdocs cli
 RUN npm install -g @techdocs/cli
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+
+USER $USERNAME
 
 WORKDIR /content
 
