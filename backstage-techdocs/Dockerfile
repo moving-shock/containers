@@ -9,13 +9,15 @@ ARG NODE_VERSION=v16.20.1
 ARG PLANTUML_VERSION=v1.2023.9
 # renovate: datasource=java-version depName=java packageName=java-jre
 ARG JAVA_VERSION=17.0.6+10
+# renovate: datasource=npm depName=techdocs/cli
+ARG TECHDOCS_VERSION=1.4.3
 # Arch is provided by buildx
 ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG TARGETVARIANT
-RUN printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
-    && printf ", TARGETARCH=${TARGETARCH}" \
-    && printf ", TARGETVARIANT=${TARGETVARIANT}"
+RUN printf "I'm building for TARGETPLATFORM=%s" "${TARGETPLATFORM}" \
+    && printf ", TARGETARCH=%s" "${TARGETARCH}" \
+    && printf ", TARGETVARIANT=%s" "${TARGETVARIANT}"
 
 COPY requirements.txt /tmp/requirements.txt
 
@@ -27,25 +29,31 @@ LABEL org.opencontainers.image.source="https://github.com/moving-shock/container
 USER root
 
 # Install prerequisites
-RUN apt-get update && \
-    apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg curl graphviz fontconfig
+RUN apt-get update \
+    && apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg curl graphviz fontconfig \
+    && apt-get install -y python3 python3-dev python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
 
 # Install python
-RUN apt-get install -y python3 python3-dev python3-pip && \
-    pip install --upgrade --no-cache-dir pip
+RUN pip install --upgrade --no-cache-dir pip
 
 # Install Temurin Java
 # Get the major version of Java
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN echo ${JAVA_VERSION} | grep -o '^[0-9]*' > /tmp/java_major_version.txt
 # Add public key
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -o - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
 # Add repository to the list of sources
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
-# update the package sources
-RUN apt-get update
 # install Azul Zulu JDK 17
 RUN JAVA_MAJOR_VERSION=$(echo "${JAVA_VERSION}" | grep -o '^[0-9]*') \
- && apt-get --yes install temurin-${JAVA_MAJOR_VERSION}-jre=${JAVA_VERSION}
+  && apt-get update \
+  && apt-get --yes install temurin-${JAVA_MAJOR_VERSION}-jre=${JAVA_VERSION}  \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install node
 RUN NODE_ARCH=$(if [ "${TARGETARCH}" = "amd64" ]; then echo "x64"; else echo "${TARGETARCH}"; fi) \
@@ -64,14 +72,14 @@ RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/pla
 RUN chmod 755 /usr/local/bin/plantuml
 
 # Install mkdocs
-RUN pip install -r /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Install techdocs cli
-RUN npm install -g @techdocs/cli
+RUN npm install -g @techdocs/cli@${TECHDOCS_VERSION}
 
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+  && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
 USER $USERNAME
 
