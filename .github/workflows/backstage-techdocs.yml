@@ -50,6 +50,7 @@ jobs:
           context: ./backstage-techdocs
           file: ./backstage-techdocs/Dockerfile
           platforms: linux/amd64,linux/arm64
+          load: true
           tags: 'test'
           cache-from: type=gha
           cache-to: type=gha,mode=max
