@@ -61,15 +61,10 @@ jobs:
           tags: 'localhost:5000/moving-shock/backstage-techdocs:test'
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+      - name: Grype scan image
+        uses: anchore/scan-action@v3
         with:
-          image-ref: 'localhost:5000/moving-shock/backstage-techdocs:test'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          image: 'localhost:5000/moving-shock/backstage-techdocs:test'
       - name: Push Image
         id: docker_push
         uses: docker/build-push-action@v4
