@@ -1,4 +1,4 @@
-FROM debian:11-slim@sha256:2b5b8b2b0e4f5f5b9b0bcbf2b
+FROM debian:11-slim@sha256:61386e11b5256efa33823cbfafd668dd651dbce810b24a8fb7b2e32fa7f65a85
 
 ARG USERNAME=techdocs
 ARG USER_UID=1001
