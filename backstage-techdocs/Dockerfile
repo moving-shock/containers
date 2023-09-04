@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:11-slim@sha256:2b5b8b2b0e4f5f5b9b0bcbf2b
 
 ARG USERNAME=techdocs
 ARG USER_UID=1001
