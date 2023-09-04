@@ -32,6 +32,7 @@
   repositories: [
     "moving-shock/containers"
   ],
+  separateMinorPatch: true,
   //Rules for major
   major: {
     dependencyDashboardApproval: true
