@@ -1,10 +1,10 @@
-FROM debian:11-slim@sha256:61386e11b5256efa33823cbfafd668dd651dbce810b24a8fb7b2e32fa7f65a85
+FROM debian:12-slim@sha256:741bae561f5c2261f4cdd535e4fd4c248dec0aafc1b9a1410b3d67ad24571340
 
 ARG USERNAME=techdocs
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 # renovate: datasource=node-version depName=node versioning=npm
-ARG NODE_VERSION=v16.20.2
+ARG NODE_VERSION=v18.17.1
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
 ARG PLANTUML_VERSION=v1.2023.10
 # renovate: datasource=java-version depName=java packageName=java-jre
