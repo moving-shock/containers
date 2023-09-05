@@ -36,7 +36,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python
-RUN pip install --upgrade --no-cache-dir pip
+RUN pip install --break-system-packages --upgrade --no-cache-dir pip
 
 # Install Temurin Java
 # Get the major version of Java
@@ -72,7 +72,7 @@ RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/pla
 RUN chmod 755 /usr/local/bin/plantuml
 
 # Install mkdocs
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --break-system-packages --no-cache-dir -r /tmp/requirements.txt
 
 # Install techdocs cli
 RUN npm install -g @techdocs/cli@${TECHDOCS_VERSION}
