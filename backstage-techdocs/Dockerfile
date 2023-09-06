@@ -35,7 +35,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install python
+# Update pip
+# hadolint ignore=DL3013
 RUN pip install --break-system-packages --upgrade --no-cache-dir pip
 
 # Install Temurin Java
