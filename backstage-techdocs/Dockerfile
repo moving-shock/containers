@@ -31,12 +31,12 @@ USER root
 # Install prerequisites
 RUN apt-get update \
     && apt-get install -y software-properties-common ca-certificates apt-transport-https gnupg curl graphviz fontconfig \
-    && apt-get install -y python3 python3-dev python3-pip \
+    && apt-get install -y python3 python3-pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python
-RUN pip install --upgrade --no-cache-dir pip
+RUN pip install --break-system-packages --upgrade --no-cache-dir pip
 
 # Install Temurin Java
 # Get the major version of Java
@@ -72,7 +72,7 @@ RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/pla
 RUN chmod 755 /usr/local/bin/plantuml
 
 # Install mkdocs
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --break-system-packages --no-cache-dir -r /tmp/requirements.txt
 
 # Install techdocs cli
 RUN npm install -g @techdocs/cli@${TECHDOCS_VERSION}
