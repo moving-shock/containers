@@ -8,7 +8,7 @@ ARG NODE_VERSION=v18.19.0
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
 ARG PLANTUML_VERSION=v1.2023.12
 # renovate: datasource=java-version depName=java packageName=java-jre
-ARG JAVA_VERSION=17.0.6+10
+ARG JAVA_VERSION=17.0.9+9
 # renovate: datasource=npm depName=@techdocs/cli
 ARG TECHDOCS_VERSION=1.7.0
 # Arch is provided by buildx
