@@ -8,7 +8,7 @@ ARG NODE_VERSION=v18.19.0
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
 ARG PLANTUML_VERSION=v1.2023.13
 # renovate: datasource=java-version depName=java packageName=java-jre
-ARG JAVA_VERSION=17.0.9+9
+ARG JAVA_VERSION=17.0.10.0.0+7
 # renovate: datasource=npm depName=@techdocs/cli
 ARG TECHDOCS_VERSION=1.8.1
 # Arch is provided by buildx
@@ -19,7 +19,7 @@ RUN printf "I'm building for TARGETPLATFORM=%s" "${TARGETPLATFORM}" \
     && printf ", TARGETARCH=%s" "${TARGETARCH}" \
     && printf ", TARGETVARIANT=%s" "${TARGETVARIANT}"
 
-COPY requirements.txt /tmp/requirements.txt
+
 
 LABEL org.opencontainers.image.source="https://github.com/moving-shock/containers" \
       org.opencontainers.image.base.name="ghcr.io/moving-shock/backstage-techdocs" \
@@ -73,6 +73,7 @@ RUN echo '#!/bin/sh\n\njava -jar '/opt/plantuml.jar' ${@}' >> /usr/local/bin/pla
 RUN chmod 755 /usr/local/bin/plantuml
 
 # Install mkdocs
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install --break-system-packages --no-cache-dir -r /tmp/requirements.txt
 
 # Install techdocs cli

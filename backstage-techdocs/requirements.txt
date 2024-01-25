@@ -1,8 +1,8 @@
 ###### Requirements ######
-mkdocs-techdocs-core ==1.3.3
-mkdocs-same-dir == 0.1.2
+mkdocs-techdocs-core == 1.3.3
 mkdocs-video == 1.5.0
-mkdocs-section-index ==0.3.8
-#mkdocs-apicall-plugin == 0.1.7 Incompatible with mkdocs-material 9.1.3
-mkdocs-glightbox ==0.3.6
-mkdocs-image-captions == 0.2.2
+mkdocs-section-index == 0.3.8
+mkdocs-apicall-plugin == 0.1.10
+mkdocs-glightbox == 0.3.6
+#mkdocs-same-dir == 0.1.2
+#mkdocs-image-captions == 0.2.2
