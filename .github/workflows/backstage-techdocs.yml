@@ -29,9 +29,9 @@ jobs:
             ghcr.io/moving-shock/backstage-techdocs
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{version}},value=v1.4.7
-            type=semver,pattern={{major}}.{{minor}},value=v1.4.7
-            type=semver,pattern={{major}},value=v1.4.7
+            type=semver,pattern={{version}},value=v1.8.1
+            type=semver,pattern={{major}}.{{minor}},value=v1.8.1
+            type=semver,pattern={{major}},value=v1.8.1
             type=sha
       -
         name: Set up QEMU
