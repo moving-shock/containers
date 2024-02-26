@@ -20,6 +20,10 @@ jobs:
         name: Checkout repo
         uses: actions/checkout@v4
       -
+        name: Read VERSION file and extract version
+        id: get_version
+        run: echo "::set-output name=version::$(tail -n +2 ./backstage-techdocs/VERSION | head -n 1)"
+      -
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -29,9 +33,9 @@ jobs:
             ghcr.io/moving-shock/backstage-techdocs
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{version}},value=v1.8.1
-            type=semver,pattern={{major}}.{{minor}},value=v1.8.1
-            type=semver,pattern={{major}},value=v1.8.1
+            type=semver,pattern={{version}},value=v{{version}}
+            type=semver,pattern={{major}}.{{minor}},value=v{{version}}
+            type=semver,pattern={{major}},value=v{{version}}
             type=sha
       -
         name: Set up QEMU
