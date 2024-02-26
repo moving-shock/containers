@@ -48,10 +48,8 @@
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     },
     {
-      "fileMatch": ["(^|/|\\.)VERSION$", "./backend/VERSION"],
-      "matchStrings": ["# renovate: datasource=npm depName=@?([^\\s]+).*?^(\\d+)\\.(\\d+)\\.(\\d+)$"],
-      "datasourceTemplate": "npm",
-      "depNameTemplate": "{{depName}}",
+      "fileMatch": ["(^|/|\\.)VERSION$"],
+      "matchStrings": ["# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>@?[^\\s]+)\\n(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
       "versioningTemplate": "semver"
     }
   ],
