@@ -1,0 +1,58 @@
+{
+  extends: [
+    "config:base",
+    ":enableRenovate",
+    ":rebaseStalePrs",
+    ":semanticCommits",
+    ":separatePatchReleases",
+    "docker:enableMajor",
+    ":autodetectRangeStrategy",
+    ":enablePreCommit"
+  ],
+  assignees: [
+    "samejar"
+  ],
+  dependencyDashboard: true,
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  dependencyDashboardAutoclose: true,
+  osvVulnerabilityAlerts: true,
+  enabledManagers: [
+    "npm",
+    "nodenv",
+    "dockerfile",
+    "github-actions",
+    "pip_requirements",
+    "pre-commit",
+    "regex"
+  ],
+  labels: [
+    "dependencies"
+  ],
+  platform: "github",
+  repositories: [
+    "moving-shock/containers"
+  ],
+  separateMinorPatch: true,
+  //Rules for major
+  major: {
+    dependencyDashboardApproval: true
+  },
+  // Set up Renovate Managers
+  regexManagers: [
+    {
+      "fileMatch": ["(^|/|\\.)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s",
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?\\s(?:ENV|ARG) .+?_SHA=(?<currentDigest>.+?)\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    },
+    {
+      "fileMatch": ["(^|/|\\.)VERSION$"],
+      "matchStrings": ["# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>@?[^\\s]+)\\n(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "versioningTemplate": "semver"
+    }
+  ],
+  packageRules: [
+  ]
+}
