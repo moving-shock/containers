@@ -25,7 +25,7 @@ jobs:
         run: echo "version=$(tail -n +2 ./backstage-techdocs/VERSION | head -n 1)" >> $GITHUB_OUTPUT
       - name: Output version
         id: output_version
-        run: echo "Version [${{ steps.get-version.outputs.version }}]"
+        run: echo "Version [${{ steps.get_version.outputs.version }}]"
       -
         name: Docker meta
         id: meta
@@ -36,9 +36,9 @@ jobs:
             ghcr.io/moving-shock/backstage-techdocs
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{version}},value=v${{ steps.get-version.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=v${{ steps.get-version.outputs.version }}
-            type=semver,pattern={{major}},value=v${{ steps.get-version.outputs.version }}
+            type=semver,pattern={{version}},value=v${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=v${{ steps.get_version.outputs.version }}
+            type=semver,pattern={{major}},value=v${{ steps.get_version.outputs.version }}
             type=sha
       -
         name: Set up QEMU
