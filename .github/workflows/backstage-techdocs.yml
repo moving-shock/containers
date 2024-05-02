@@ -7,6 +7,9 @@ on:
     paths:
       - 'backstage-techdocs/**'
       - '.github/workflows/backstage-techdocs.yml'
+
+permissions: read-all
+
 jobs:
   build-upload:
     runs-on: ubuntu-latest
