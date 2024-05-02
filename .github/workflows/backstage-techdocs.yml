@@ -25,7 +25,7 @@ jobs:
       -
         name: Read VERSION file and extract version
         id: get_version
-        run: echo "version=$(tail -n +2 ./backstage-techdocs/VERSION | head -n 1)" >> $GITHUB_OUTPUT
+        run: echo "version=$(tail -n +2 ./backstage-techdocs/VERSION | head -n 1)" >> "$GITHUB_OUTPUT"
       - name: Output version
         id: output_version
         run: echo "Version [${{ steps.get_version.outputs.version }}]"
