@@ -6,7 +6,7 @@ ARG USER_GID=$USER_UID
 # renovate: datasource=node-version depName=node versioning=npm
 ARG NODE_VERSION=v20.13.1
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
-ARG PLANTUML_VERSION=v1.2024.4
+ARG PLANTUML_VERSION=v1.2024.5
 # renovate: datasource=java-version depName=java packageName=java-jre
 ARG JAVA_VERSION=17.0.9.0.0+9
 # renovate: datasource=npm depName=@techdocs/cli
