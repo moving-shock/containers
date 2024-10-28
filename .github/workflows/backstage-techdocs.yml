@@ -71,7 +71,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Grype scan image
-        uses: anchore/scan-action@v3
+        uses: anchore/scan-action@v5
         with:
           image: 'localhost:5000/moving-shock/backstage-techdocs:test'
           output-format: table
