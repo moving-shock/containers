@@ -1,58 +1,63 @@
 {
   extends: [
-    "config:base",
-    ":enableRenovate",
-    ":rebaseStalePrs",
-    ":semanticCommits",
-    ":separatePatchReleases",
-    "docker:enableMajor",
-    ":autodetectRangeStrategy",
-    ":enablePreCommit"
+    'config:recommended',
+    ':enableRenovate',
+    ':rebaseStalePrs',
+    ':semanticCommits',
+    ':separatePatchReleases',
+    'docker:enableMajor',
+    ':enablePreCommit',
   ],
   assignees: [
-    "samejar"
+    'samejar',
   ],
   dependencyDashboard: true,
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   dependencyDashboardAutoclose: true,
   osvVulnerabilityAlerts: true,
   enabledManagers: [
-    "npm",
-    "nodenv",
-    "dockerfile",
-    "github-actions",
-    "pip_requirements",
-    "pre-commit",
-    "regex"
+    'npm',
+    'nodenv',
+    'dockerfile',
+    'github-actions',
+    'pip_requirements',
+    'pre-commit',
+    'custom.regex',
   ],
   labels: [
-    "dependencies"
+    'dependencies',
   ],
-  platform: "github",
+  platform: 'github',
   repositories: [
-    "moving-shock/containers"
+    'moving-shock/containers',
   ],
   separateMinorPatch: true,
-  //Rules for major
   major: {
-    dependencyDashboardApproval: true
+    dependencyDashboardApproval: true,
   },
-  // Set up Renovate Managers
-  regexManagers: [
+  customManagers: [
     {
-      "fileMatch": ["(^|/|\\.)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s",
-        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?\\s(?:ENV|ARG) .+?_SHA=(?<currentDigest>.+?)\\s"
+      customType: 'regex',
+      fileMatch: [
+        '(^|/|\\.)Dockerfile$',
+        '(^|/)Dockerfile\\.[^/]*$',
       ],
-      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+      matchStrings: [
+        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s',
+        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?\\s(?:ENV|ARG) .+?_SHA=(?<currentDigest>.+?)\\s',
+      ],
+      versioningTemplate: '{{#if versioning}}{{versioning}}{{else}}semver{{/if}}',
     },
     {
-      "fileMatch": ["(^|/|\\.)VERSION$"],
-      "matchStrings": ["# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>@?[^\\s]+)\\n(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
-      "versioningTemplate": "semver"
-    }
+      customType: 'regex',
+      fileMatch: [
+        '(^|/|\\.)VERSION$',
+      ],
+      matchStrings: [
+        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>@?[^\\s]+)\\n(?<currentValue>\\d+\\.\\d+\\.\\d+)',
+      ],
+      versioningTemplate: 'semver',
+    },
   ],
-  packageRules: [
-  ]
+  packageRules: [],
 }
