@@ -61,7 +61,7 @@ jobs:
       -
         name: Build Image and Upload to Local Registry
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./backstage-techdocs
           file: ./backstage-techdocs/Dockerfile
@@ -82,7 +82,7 @@ jobs:
           docker run --rm localhost:5000/moving-shock/backstage-techdocs:test
       - name: Push Image
         id: docker_push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./backstage-techdocs
           file: ./backstage-techdocs/Dockerfile
