@@ -71,6 +71,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Grype scan image
+        id: grype_scan
         uses: anchore/scan-action@v5
         with:
           image: 'localhost:5000/moving-shock/backstage-techdocs:test'
@@ -78,11 +79,11 @@ jobs:
           only-fixed: true
           severity-cutoff: critical
       - name: Inspect action SARIF report
-        run: cat ${{ steps.scan.outputs.sarif }}
+        run: cat ${{ steps.grype_scan.outputs.sarif }}
       - name: Upload Grype scan SARIF report
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{ steps.scan.outputs.sarif }}          
+          sarif_file: ${{ steps.grype_scan.outputs.sarif }}          
       - name: Test image
         run: |
           docker run --rm localhost:5000/moving-shock/backstage-techdocs:test
