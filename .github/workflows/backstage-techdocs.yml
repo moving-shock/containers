@@ -77,6 +77,10 @@ jobs:
           output-format: table
           only-fixed: true
           severity-cutoff: critical
+      - name: Upload Grype scan SARIF report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}          
       - name: Test image
         run: |
           docker run --rm localhost:5000/moving-shock/backstage-techdocs:test
