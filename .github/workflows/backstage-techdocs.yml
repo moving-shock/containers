@@ -8,7 +8,11 @@ on:
       - 'backstage-techdocs/**'
       - '.github/workflows/backstage-techdocs.yml'
 
-permissions: read-all
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+  statuses: write
 
 jobs:
   build-upload:
@@ -83,7 +87,8 @@ jobs:
       - name: Upload Grype scan SARIF report
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{ steps.grype_scan.outputs.sarif }}          
+          sarif_file: ${{ steps.grype_scan.outputs.sarif }}
+        continue-on-error: true
       - name: Test image
         run: |
           docker run --rm localhost:5000/moving-shock/backstage-techdocs:test
