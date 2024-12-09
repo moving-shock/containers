@@ -4,7 +4,7 @@ ARG USERNAME=techdocs
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 # renovate: datasource=node-version depName=node versioning=npm
-ARG NODE_VERSION=v22.11.0
+ARG NODE_VERSION=v22.12.0
 # renovate: datasource=github-release-attachments depName=plantuml/plantuml
 ARG PLANTUML_VERSION=v1.2024.8
 # renovate: datasource=java-version depName=java packageName=java-jre
