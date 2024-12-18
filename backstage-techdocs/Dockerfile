@@ -10,7 +10,7 @@ ARG PLANTUML_VERSION=v1.2024.8
 # renovate: datasource=java-version depName=java packageName=java-jre
 ARG JAVA_VERSION=17.0.9.0.0+9
 # renovate: datasource=npm depName=@techdocs/cli
-ARG TECHDOCS_VERSION=1.8.23
+ARG TECHDOCS_VERSION=1.8.24
 # Arch is provided by buildx
 ARG TARGETPLATFORM
 ARG TARGETARCH
