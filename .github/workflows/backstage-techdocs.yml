@@ -76,7 +76,7 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Grype scan image
         id: grype_scan
-        uses: anchore/scan-action@v5
+        uses: anchore/scan-action@v6
         with:
           image: 'localhost:5000/moving-shock/backstage-techdocs:test'
           output-format: sarif
